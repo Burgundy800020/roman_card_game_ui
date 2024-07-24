@@ -1,0 +1,49 @@
+#:import os os
+#:import Window kivy.core.window.Window
+#:import Clipboard kivy.core.clipboard.Clipboard
+#:import Snackbar kivymd.uix.snackbar.Snackbar
+
+<CancelButton@MDFloatingActionButton+MDTooltip>
+<RoomCode@MDTextButton+MDTooltip>
+
+<PreGameScreen>:
+    FitImage:
+        source:f"{os.environ['root']}/assets/images/background2.jpg"
+    CancelButton:
+        icon:"cancel"
+        tooltip_text:"Close room"
+        pos:(Window.width-dp(80),dp(30))
+        on_release:
+            root.cancel()
+    MDFloatLayout:
+        radius:("30dp","30dp")
+        md_bg_color:(1,1,1,.5)
+        size_hint:(None,None)
+        size:(Window.width-dp(200),Window.height-dp(120))
+        pos_hint:{"center_x":.5,"center_y":.5}
+        MDLabel:    
+            text:root.title
+            font_size:"36sp"
+            halign:"center"
+            pos_hint:{"center_x":.5,"center_y":.85}
+        RoomCode:
+            text:(root.code if root.code!="" else "Code will appear here") if root.private else ""
+            halign:"center"
+            tooltip_text:"Click to copy"
+            disabled:root.code==""
+            size_hint_x:1
+            pos_hint:{"center_x":.5,"center_y":.64}
+            on_release:
+                Clipboard.copy(root.code)
+                Snackbar(text="Room ID copied to clipboard!").open()
+        MDLabel:
+            text:root.status
+            font_size:"24sp"
+            halign:"center"
+            pos_hint:{"center_x":.5,"center_y":.45}
+        Image:
+            source:f"{os.environ['root']}/assets/animations/loading.gif"
+            anim_delay:0.06
+            size_hint:(None,None)
+            size:("110dp","110dp")
+            pos_hint:{"center_x":.5,"center_y":.3}

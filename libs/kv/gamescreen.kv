@@ -1,0 +1,248 @@
+#: import os os
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+#:import Window kivy.core.window.Window
+
+<LifeBar>:
+    orientation:"horizontal"
+    size_hint_y:None
+    height:"30dp"
+    spacing:"30dp"
+    padding:("50dp","4dp","50dp","4dp")
+    canvas.before:
+        Color:
+            rgba:(0,0,0,.5)
+        Rectangle:
+            pos:self.pos
+            size:self.size
+
+<UnitBar@MDBoxLayout>:
+    orientation: "horizontal"
+    height: "80dp"
+    spacing:"50dp"
+    padding:("10dp","4dp","10dp","4dp")
+<OptionBar@MDBoxLayout>:
+    orientation: "horizontal"
+    height: "85dp"
+    spacing:"50dp"
+    padding:("50dp","4dp","50dp","4dp")
+
+
+<Card>:
+    size_hint:(None,None)
+    size:("80dp","100dp")
+    Screen:
+        name:"hidden"
+        Image:
+            source:"assets/images/card.jpg"
+            keep_ratio:False
+            allow_stretch:True
+    Screen:
+        name:"card"
+        MDBoxLayout:
+            orientation:"vertical"
+            radius:("8dp","8dp")
+            md_bg_color:(.2,.2,.2,1)
+            MDLabel:
+                text:root.number
+                halign:"right"
+            Image:
+                size_hint_y:0.5
+            MDLabel:
+                text:root.name
+                halign:"center"
+
+<Name@Label>:
+    size_hint_x: 0.4
+    font_size:28
+    size_hint_y:None
+    height:"30dp"
+    color:(100, 0, 100, 50)
+    halign:"center"
+    canvas.before:
+        Color:
+            rgba:(0,0,0,.5)
+        Rectangle:
+            pos:self.pos
+            size:self.size
+
+
+<Character>:
+    size_hint_x: None
+    width: "93dp"
+
+
+<CardScroller@MDScrollView>:
+    do_scroll_x:True
+    effect_cls:ScrollEffect
+    canvas.before:
+        Color:
+            rgba:(0,0,0,.3)
+        Rectangle:
+            pos:self.pos
+            size:self.size
+    MDBoxLayout:
+        id:cards
+        orientation:"horizontal"
+        spacing: "60dp"
+        padding:("50dp","5dp","50dp","5dp")
+        
+
+<Picture@Image+MDTooltip>
+    tooltip_text:""
+    keep_ratio:False
+    size_hint_x:None
+    width:"150dp"
+
+<PlayerQuote@Button>:
+    color: (0, 0, 0, 1)
+    size_hint_x: 0.23
+    text_size:self.size
+    font_size:22
+    halign:"center"
+    valign:"center"
+    background_normal: 'libs/baseclass/Images/quotePlayer.png'
+    background_color: (0, 0, 0, 0)
+<OpponentQuote@Button>:
+    color: (0, 0, 0, 1)
+    size_hint_x: 0.23
+    text_size:self.size
+    font_size:22
+    halign:"center"
+    valign:"center"
+    background_normal: 'libs/baseclass/Images/quoteOpponent.png'
+    background_color: (0, 0, 0, 0)
+
+<GameScreen>:
+    dialogue: dialogue
+    tutorial: tutorial
+    FitImage:
+        source:f"{os.environ['root']}/assets/images/background4.jpg"
+    MDBoxLayout:
+        orientation:"vertical"
+        MDBoxLayout:
+            orientation:"horizontal"
+            size_hint_y:None
+            height:"130dp"
+            Character:
+                id:opponentPicture
+            CardScroller:
+                id:opponentCards   
+        MDBoxLayout:
+            size_hint_y:None
+            height:"130dp"
+            orientation:"horizontal"
+            OpponentQuote:
+                id:opponentQuote
+            MDBoxLayout:
+                orientation:"vertical"   
+                MDBoxLayout:
+                    orientation:"horizontal"
+                    size_hint_y:None
+                    height:"30dp" 
+                    Name:
+                        id:opponentName
+                    LifeBar:
+                        id:opponentLife
+                OptionBar:
+                    id: "opponentOptions" 
+        MDBoxLayout:
+            orientation:"horizontal"
+            Label:
+                id: dialogue
+                text_size: self.size
+                font_size:22
+                halign: "left"
+                valign: "top"
+                size_hint_x:None
+                width: "350dp"
+                padding:("10dp","4dp","4dp","4dp")
+                canvas.before:
+                    Color:
+                        rgba:(0,0,0,.25)
+                    Rectangle:
+                        pos:self.pos
+                        size:self.size
+            MDBoxLayout:
+                orientation: "vertical"
+                UnitBar:
+                    id:opponentUnits
+                MDFloatLayout:
+                UnitBar:
+                    id: playerUnits
+            Label:
+                id: tutorial
+                text_size: self.size
+                font_size:22
+                halign: "center"
+                valign: "center"
+                size_hint_x:None
+                width: "320dp"
+                padding:("0dp","4dp","0dp","4dp")
+                canvas.before:
+                    Color:
+                        rgba:(0,0,0,.25)
+                    Rectangle:
+                        pos:self.pos
+                        size:self.size
+        MDBoxLayout:
+            orientation:"horizontal"
+            size_hint_y:None
+            height:"130dp"
+            MDBoxLayout:
+                orientation:"vertical"
+                OptionBar:
+                    id: playerOptions
+                MDBoxLayout:
+                    orientation:"horizontal"
+                    size_hint_y:None
+                    height:"30dp" 
+                    LifeBar:
+                        reversed:True
+                        id:playerLife
+                    Name:
+                        id:playerName    
+            PlayerQuote:
+                id:playerQuote
+        MDBoxLayout:
+            orientation:"horizontal"
+            size_hint_y:None
+            height:"130dp"
+            CardScroller:
+                id:playerCards
+            Character:
+                id:playerPicture
+<EndGame>:
+    size_hint:(None,None)
+    size:("500dp","300dp")
+    pos_hint:{'center_x':0.5,'center_y':0.5}
+    MDBoxLayout:
+        orientation:"vertical"
+        md_bg_color:(.8,.8,.8,1)
+        radius:("20dp","20dp")
+        MDLabel:
+            canvas.before:
+                Color:
+                    rgba:app.theme_cls.primary_color
+                RoundedRectangle:
+                    size:self.size
+                    pos:self.pos
+                    radius:(dp(20),dp(20),0,0)
+            text:"Game Over"
+            font_size:"30sp"
+            halign:"center"
+            size_hint_y:.5
+        MDLabel:
+            text:"Come back to play as different characters!"
+            valign:"top"
+            padding:("15dp","20dp")
+            size_hint_y:.5
+        MDBoxLayout:
+            orientation:"horizontal"
+            adaptive_size:True
+            spacing:"100dp"
+            padding:("10dp","10dp")
+            pos_hint:{"center_x":.5,"center_y":.5}
+            MDRaisedButton:
+                id:home
+                text:"Return to Home"
+                on_release:root.redirect(root.homeCallback)

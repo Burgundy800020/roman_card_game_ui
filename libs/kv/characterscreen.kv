@@ -1,0 +1,65 @@
+#:import os os
+
+<WaitingNotice>:
+    auto_dismiss:False
+    size_hint:(None,None)
+    size:("450dp","90dp")
+    MDBoxLayout:
+        orientation:"horizontal"
+        md_bg_color:(1,1,1,1)
+        radius:("20dp","20dp")
+        Image:
+            source:f"{os.environ['root']}/assets/animations/loading.gif"
+            anim_delay:0.06
+            size_hint_x:.5
+        MDLabel:
+            text:"Waiting for opponent..."
+            font_size:"20sp"
+            halign:"center"
+
+<CharacterBox>:
+    orientation:"vertical"
+    md_bg_color:(.2,.2,.2,.7)
+    radius:("20dp","20dp")
+    size_hint:(None,None)
+    size:("260dp","360dp")
+    MDLabel:
+        text:f"[b]{root.name}[/b]"
+        markup:True
+        font_size:"25sp"
+        color:(1,1,1,1)
+        padding:("6dp","8dp")
+        halign:"center"
+        size_hint_y:.44
+    Image:
+        id:characterimage
+        allow_stretch:True
+    MDLabel:
+        text:root.description
+        color:(1,1,1,1)
+        padding:("15dp","10dp")
+        halign:"justify"
+        pos_hint:{"y":0}
+
+<CharacterScreen>:
+    FitImage:
+        source:f"{os.environ['root']}/assets/images/background3.jpg"
+    MDFloatingActionButton:
+        icon:"home"
+        pos:(Window.width-dp(80),dp(30))
+        on_release:root.cancel()
+    MDLabel:
+        text:"[b]Choose a character to play[/b]"
+        markup:True
+        color:(1,1,1,1)
+        font_size:"50sp"
+        halign:"center"
+        pos_hint:{"center_x":.5,"center_y":.87}
+    CharacterBox:
+        id:character1
+        pos_hint:{"center_x":.28,"center_y":.4}
+        on_release:root.chooseCharacter(self.name)
+    CharacterBox:
+        id:character2
+        pos_hint:{"center_x":.72,"center_y":.4}
+        on_release:root.chooseCharacter(self.name)

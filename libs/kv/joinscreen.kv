@@ -1,0 +1,51 @@
+#:import os os
+
+<JoiningNotice>:
+    size_hint:(None,None)
+    size:("400dp","70dp")
+    MDBoxLayout:
+        orientation:"horizontal"
+        radius:("20dp","20dp")
+        Image:
+            source:f"{os.environ['root']}/assets/animations/loading.gif"
+            anim_delay:0.06
+            size_hint_x:.5
+        MDLabel:
+            text:"Opening room..."
+            font_size:"20sp"
+            halign:"center"
+
+<JoinScreen>:
+    FitImage:
+        source:f"{os.environ['root']}/assets/images/roman_world.jpg"
+    MDFloatingActionButton:
+        icon:"home"
+        pos:(Window.width-dp(80),dp(30))
+        on_release:
+            root.manager.current="HomeScreen"
+    MDFloatLayout:
+        radius:("30dp","30dp")
+        md_bg_color:(1,1,1,.5)
+        size_hint:(None,None)
+        size:(Window.width-dp(300),Window.height-dp(200))
+        pos_hint:{"center_x":.5,"center_y":.5}
+        MDLabel:    
+            text:"Join an existing room"
+            font_size:"32sp"
+            halign:"center"
+            pos_hint:{"center_x":.5,"center_y":.87}
+        MDBoxLayout:
+            orientation:"horizontal"
+            spacing:"20dp"
+            size_hint:(None,None)
+            size:("480dp","40dp")
+            pos_hint:{"center_x":.5,"center_y":.45}
+            MDTextField:
+                id:keyEntry
+                mode:"round"
+                hint_text:"Enter room id (36 characters)"
+            MDFillRoundFlatIconButton:
+                icon:"send-circle"
+                text:"Confirm"
+                disabled:len(keyEntry.text)!=36
+                on_release:root.preJoinRoom()

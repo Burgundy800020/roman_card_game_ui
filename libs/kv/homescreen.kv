@@ -1,0 +1,98 @@
+#:import os os
+#:import Window kivy.core.window.Window
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+
+<HomeButton>:
+    background_normal:f"{os.environ['root']}/assets/images/button1.png"
+    background_down:f"{os.environ['root']}/assets/images/button1.png"
+    size_hint:(None,None)
+    size:("160dp","75dp")
+    pos:(Window.width-dp(200),root.posY)
+
+<AskOnlineGame>:
+    size_hint:(None,None)
+    size:("500dp","300dp")
+    MDBoxLayout:
+        orientation:"vertical"
+        md_bg_color:(.8,.8,.8,1)
+        radius:("20dp","20dp")
+        MDLabel:
+            canvas.before:
+                Color:
+                    rgba:app.theme_cls.primary_color
+                RoundedRectangle:
+                    size:self.size
+                    pos:self.pos
+                    radius:(dp(20),dp(20),0,0)
+            text:"Ready for a duel?"
+            font_size:"30sp"
+            halign:"center"
+            size_hint_y:.5
+        MDLabel:
+            text:"Start a new game against other players from the internet or against your friend."
+            valign:"top"
+            padding:("15dp","20dp")
+            size_hint_y:.5
+        MDBoxLayout:
+            orientation:"horizontal"
+            adaptive_size:True
+            spacing:"100dp"
+            padding:("10dp","10dp")
+            pos_hint:{"center_x":.5,"center_y":.5}
+            MDRaisedButton:
+                text:" Join Game "
+                on_release:root.redirect(root.joinScreen)
+            MDRaisedButton:
+                id:createButton
+                text:"Create Room"
+                on_release:root.menu.open()
+
+<HomeScreen>:
+    MDNavigationLayout:
+        MDScreenManager:
+            MDScreen:
+                FitImage:
+                    source:f"{os.environ['root']}/assets/images/romeSites.png"
+                MDAnchorLayout:
+                    anchor_y:"top"
+                    MDTopAppBar:
+                        title:"Rome: Republic Legacy"
+                        anchor_title:"center"
+                        left_action_items:[["menu",lambda caller:drawer.set_state("open")]]
+                HomeButton:
+                    text:"Play online"
+                    posY:dp(140)
+                    on_release:
+                        self.wobble()
+                        root.askOnlineGame.open()
+                HomeButton:
+                    text:"Campaign"
+                    posY:dp(40)
+                    on_release:
+                        self.wobble()
+        MDNavigationDrawer:
+            id:drawer
+            width:"360dp"
+            MDNavigationDrawerMenu:
+                effect_cls:ScrollEffect
+                MDNavigationDrawerHeader:
+                    title:"Roman Card Game"
+                    text:"Revive the ancient Rome"
+                    text_font_style:"Caption"
+                    text_font_size:"18sp"
+                    source:f"{os.environ['root']}/assets/images/logo.png"
+                    padding:("12dp",0,0,"56dp")
+                MDNavigationDrawerLabel:
+                    text:"Information"
+                MDNavigationDrawerItem:
+                    icon:"frequently-asked-questions"
+                    text:"Instructions"
+                MDNavigationDrawerItem:
+                    icon:"information"
+                    text:"About"
+                MDNavigationDrawerDivider:
+                MDNavigationDrawerLabel:
+                    text:"Quick actions"
+                MDNavigationDrawerItem:
+                    icon:"comment-edit"
+                    text:"Feedback"
